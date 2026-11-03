@@ -106,19 +106,21 @@ function go(id){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function showAuth(mode){
- go('auth'); const reg=mode==='register';
+ go('auth');
+ const reg=mode==='register';
  document.getElementById('authTitle').textContent=reg?'REGISTER':'LOG IN';
  document.getElementById('authSubmit').textContent=reg?'REGISTER':'LOG IN';
  document.getElementById('registerFields').style.display=reg?'block':'none';
  document.getElementById('loginFields').style.display=reg?'none':'block';
- document.getElementById('authSwitch').innerHTML=reg?'আগে অ্যাকাউন্ট আছে? <a href="#" onclick="showAuth(\\'login\\');return false" style="color:#ff7581">Log In</a>':'নতুন অ্যাকাউন্ট? <a href="#" onclick="showAuth(\\'register\\');return false" style="color:#ff7581">Register</a>';
+
+ const sw=document.getElementById('authSwitch');
+ sw.innerHTML=reg
+ ? 'আগে অ্যাকাউন্ট আছে? <a href="#" id="switchLogin" style="color:#ff7581">Log In</a>'
+ : 'নতুন অ্যাকাউন্ট? <a href="#" id="switchRegister" style="color:#ff7581">Register</a>';
+
+ const login=document.getElementById('switchLogin');
+ const register=document.getElementById('switchRegister');
+
+ if(login) login.onclick=function(e){e.preventDefault();showAuth('login')};
+ if(register) register.onclick=function(e){e.preventDefault();showAuth('register')};
 }
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display='none',3200)}
-const demoMatches=[{name:'BATTLE ROYALE',fee:'৳20',mode:'All Modes',status:'UPCOMING'},{name:'CUSTOM ROOM',fee:'Demo',mode:'Solo / Duo / Squad',status:'COMING SOON'}];
-function matchCard(m){return `<article class="card match"><div class="match-top"><span class="tag">${m.status}</span><span class="muted">FREE FIRE</span></div><h3>${m.name}</h3><div class="details"><div><span>Entry Fee</span><b>${m.fee}</b></div><div><span>Match Type</span><b>${m.mode}</b></div></div><div class="match-buttons"><button class="btn secondary" onclick="toast('Room ID ও Password Admin প্রকাশ করলে এখানে দেখা যাবে।')">ROOM ID</button><button class="btn" onclick="joinDemo()">JOIN TOURNAMENT</button></div></article>`}
-function joinDemo(){const id=prompt('তোমার Free Fire Game ID লিখো');if(id&&id.trim())toast('ডেমো: Game ID নেওয়া হয়েছে। বাস্তব Join ও পেমেন্ট চালু নয়।')}
-document.getElementById('homeMatches').innerHTML=demoMatches.slice(0,1).map(matchCard).join('');
-document.getElementById('matchesList').innerHTML=demoMatches.map(matchCard).join('');
-</script>
-</body>
-</html>
